@@ -17,6 +17,7 @@ from blueprints.server_bp import bp as server_bp
 from blueprints.user_manage_bp import bp as user_manage_bp
 from blueprints.detect_demo_bp import bp as detect_demo_bp
 from blueprints.detect_bp import bp as detect_bp
+from gevent import pywsgi
 
 '''
 前后端code约定：
@@ -95,6 +96,7 @@ def test_database_connection():
 
 if __name__ == "__main__":
     repo_dir = os.getcwd()
+    print(repo_dir)
     # weights_path = 'weights/yolov5-7.0/COCO_yolov5s6.pt'
     # weights_path = 'weights/yolov5-6.2/Sample_yolov5s6_300_epochs.pt'
     weights_path = 'weights/yolov5-3.1/TACO_yolov5s_300_epochs.pt'
@@ -114,6 +116,8 @@ if __name__ == "__main__":
     print_cyan(f'当前调用权重: {weights_path}')
     print_cyan(f'模型推断请访问: http://localhost:{args.port}/detect-demo/upload')
 
-    app.run(host="0.0.0.0", port=args.port, debug=True)
+    #app.run(host="0.0.0.0", port=args.port, debug=True)
     # 正式环境中需要使用WSGI的WSGIServer来启动应用程序
+    server = pywsgi.WSGIServer(('127.0.0.1', 5003), app)
+    server.serve_forever()
 
