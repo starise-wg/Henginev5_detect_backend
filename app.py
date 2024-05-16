@@ -56,7 +56,7 @@ app.register_blueprint(detect_bp, url_prefix='/detect')
 @app.before_first_request
 def load_default_model():
     g.repo_dir = repo_dir
-    # print_cyan(f'repo_dir: {repo_dir}')
+    print_cyan(f'repo_dir: {repo_dir}')
     g.weights_path = weights_path
     g.model_load_path = model_load_path
     # 加载默认调用权重并保存在g.model中
@@ -115,3 +115,5 @@ if __name__ == "__main__":
     print_cyan(f'模型推断请访问: http://localhost:{args.port}/detect-demo/upload')
 
     app.run(host="0.0.0.0", port=args.port, debug=True)
+    # 正式环境中需要使用WSGI的WSGIServer来启动应用程序
+
